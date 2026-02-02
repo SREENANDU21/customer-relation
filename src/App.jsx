@@ -8,8 +8,9 @@ const STORAGE_KEY = 'lumina_crm_customers';
 function App() {
   const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('date'); // 'date' | 'name' | 'location'
+  const [sortBy, setSortBy] = useState('date'); // 'date' | 'location' | 'type'
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCustomer, setEditingCustomer] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load Initial Data
@@ -32,15 +33,26 @@ function App() {
     }
   }, [customers, isLoaded]);
 
-  const addCustomer = (customerData) => {
-    const newCustomer = {
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      ...customerData
-    };
-    // Add to top
-    setCustomers(prev => [newCustomer, ...prev]);
+  const handleAddOrUpdate = (customerData) => {
+    if (editingCustomer) {
+      // Update existing
+      setCustomers(prev => prev.map(c => c.id === editingCustomer.id ? { ...customerData, id: c.id, createdAt: c.createdAt } : c));
+    } else {
+      // Add new
+      const newCustomer = {
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString(),
+        ...customerData
+      };
+      setCustomers(prev => [newCustomer, ...prev]);
+    }
+    setEditingCustomer(null);
     setIsModalOpen(false);
+  };
+
+  const handleEditInit = (customer) => {
+    setEditingCustomer(customer);
+    setIsModalOpen(true);
   };
 
   const deleteCustomer = (id) => {
@@ -59,10 +71,10 @@ function App() {
 
     // 2. Sort
     result.sort((a, b) => {
-      if (sortBy === 'name') {
-        return a.name.localeCompare(b.name);
-      } else if (sortBy === 'location') {
+      if (sortBy === 'location') {
         return a.location.localeCompare(b.location);
+      } else if (sortBy === 'type') {
+        return a.type.localeCompare(b.type);
       } else if (sortBy === 'date') {
         // Sort by follow-up date (closest first). 
         // If no date, put at bottom.
@@ -86,7 +98,13 @@ function App() {
           <h1>Lumina CRM</h1>
           <p style={{ color: 'var(--text-secondary)' }}>Manage your LED Board Clients efficiently</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            setEditingCustomer(null);
+            setIsModalOpen(true);
+          }}
+        >
           <PlusCircle size={20} /> Add Customer
         </button>
       </header>
@@ -111,21 +129,24 @@ function App() {
             style={{ width: 'auto', minWidth: '150px' }}
           >
             <option value="date">Follow-up Date</option>
-            <option value="name">Name</option>
             <option value="location">Location</option>
+            <option value="type">Board Type</option>
           </select>
         </div>
       </div>
 
-      <CustomerList customers={filteredCustomers} onDelete={deleteCustomer} />
+      <CustomerList customers={filteredCustomers} onDelete={deleteCustomer} onEdit={handleEditInit} />
 
       {/* Modal Overlay */}
       <div className={`modal-overlay ${isModalOpen ? 'active' : ''}`}>
         <div className="modal glass-panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-            <h2>New Customer</h2>
+            <h2>{editingCustomer ? 'Edit Customer' : 'New Customer'}</h2>
             <button
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => {
+                setIsModalOpen(false);
+                setEditingCustomer(null);
+              }}
               style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
             >
               <X size={24} />
@@ -133,7 +154,10 @@ function App() {
           </div>
 
           {isModalOpen && (
-            <CustomerForm onAdd={addCustomer} />
+            <CustomerForm
+              onAdd={handleAddOrUpdate}
+              initialData={editingCustomer}
+            />
           )}
         </div>
       </div>

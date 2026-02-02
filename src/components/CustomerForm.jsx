@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlusCircle } from 'lucide-react';
 
-export default function CustomerForm({ onAdd, onCancel }) {
+export default function CustomerForm({ onAdd, initialData = null }) {
     const [formData, setFormData] = useState({
         name: '',
         contact: '',
@@ -11,6 +11,12 @@ export default function CustomerForm({ onAdd, onCancel }) {
         followUp: '',
         requirements: ''
     });
+
+    useEffect(() => {
+        if (initialData) {
+            setFormData(initialData);
+        }
+    }, [initialData]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,13 +70,20 @@ export default function CustomerForm({ onAdd, onCancel }) {
                 <div className="form-group">
                     <label>Board Type</label>
                     <select name="type" value={formData.type} onChange={handleChange}>
-                        <option value="Indoor P2.5">Indoor P2.5</option>
-                        <option value="Indoor P3">Indoor P3</option>
-                        <option value="Outdoor P4">Outdoor P4</option>
-                        <option value="Outdoor P6">Outdoor P6</option>
-                        <option value="Outdoor P10">Outdoor P10</option>
-                        <option value="Transparent">Transparent LED</option>
-                        <option value="Custom">Custom</option>
+                        <optgroup label="Outdoor">
+                            <option value="Outdoor P4">Outdoor P4</option>
+                            <option value="Outdoor P5">Outdoor P5</option>
+                            <option value="Outdoor P3">Outdoor P3</option>
+                            <option value="Outdoor P2.5">Outdoor P2.5</option>
+                        </optgroup>
+                        <optgroup label="Indoor">
+                            <option value="Indoor P3">Indoor P3</option>
+                            <option value="Indoor P2.5">Indoor P2.5</option>
+                        </optgroup>
+                        <optgroup label="Rental">
+                            <option value="LED Van Rent">LED Van Rent</option>
+                        </optgroup>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div className="form-group">
@@ -107,7 +120,7 @@ export default function CustomerForm({ onAdd, onCancel }) {
             </div>
 
             <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
-                Save Customer
+                {initialData ? 'Update Customer' : 'Save Customer'}
             </button>
         </form>
     );

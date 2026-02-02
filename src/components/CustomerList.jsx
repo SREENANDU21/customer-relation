@@ -1,7 +1,7 @@
 import React from 'react';
-import { Phone, MapPin, Inbox, Clock, AlertCircle, Trash2 } from 'lucide-react';
+import { Phone, MapPin, Inbox, Clock, AlertCircle, Trash2, Edit } from 'lucide-react';
 
-export default function CustomerList({ customers, onDelete }) {
+export default function CustomerList({ customers, onDelete, onEdit }) {
     if (customers.length === 0) {
         return (
             <div style={{ gridColumn: '1/-1', textAlign: 'center', color: 'var(--text-secondary)', padding: '3rem' }}>
@@ -31,26 +31,40 @@ export default function CustomerList({ customers, onDelete }) {
 
                 return (
                     <div key={c.id} className="glass-panel customer-card" style={{ position: 'relative' }}>
-                        <button
-                            onClick={() => onDelete(c.id)}
-                            style={{
-                                position: 'absolute',
-                                top: '1rem',
-                                right: '1rem',
-                                background: 'rgba(239, 68, 68, 0.1)',
-                                border: 'none',
-                                borderRadius: '8px',
-                                padding: '0.4rem',
-                                color: '#fca5a5',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s'
-                            }}
-                            title="Delete Customer"
-                        >
-                            <Trash2 size={16} />
-                        </button>
+                        <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem' }}>
+                            <button
+                                onClick={() => onEdit(c)}
+                                style={{
+                                    background: 'rgba(6, 182, 212, 0.1)',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    padding: '0.4rem',
+                                    color: 'var(--accent-primary)',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                title="Edit Customer"
+                            >
+                                <Edit size={16} />
+                            </button>
+                            <button
+                                onClick={() => onDelete(c.id)}
+                                style={{
+                                    background: 'rgba(239, 68, 68, 0.1)',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    padding: '0.4rem',
+                                    color: '#fca5a5',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                title="Delete Customer"
+                            >
+                                <Trash2 size={16} />
+                            </button>
+                        </div>
 
-                        <div className="card-header" style={{ paddingRight: '2rem' }}>
+                        <div className="card-header" style={{ paddingRight: '5rem' }}>
                             <div>
                                 <h3 className="customer-name">{c.name}</h3>
                                 <div className="info-row" style={{ marginTop: '0.25rem' }}>
