@@ -1,103 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina CRM - LED Board Management</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumina CRM | React</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
-        <header class="animate-fade-in">
-            <div>
-                <h1>Lumina CRM</h1>
-                <p style="color: var(--text-secondary)">Manage your LED Board Clients efficiently</p>
-            </div>
-            <button class="btn btn-primary" onclick="openModal()">
-                <i data-lucide="plus-circle"></i> Add Customer
-            </button>
-        </header>
-
-        <div class="controls animate-fade-in" style="margin-bottom: 2rem; animation-delay: 0.1s;">
-            <input type="text" id="searchInput" placeholder="Search customers..." style="max-width: 400px;" onkeyup="renderCustomers()">
-        </div>
-
-        <main id="customerList" class="customer-grid animate-fade-in" style="animation-delay: 0.2s;">
-            <!-- Customer Cards will be injected here -->
-        </main>
-    </div>
-
-    <!-- Add Customer Modal -->
-    <div class="modal-overlay" id="customerModal">
-        <div class="modal glass-panel">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                <h2>New Customer</h2>
-                <button onclick="closeModal()" style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">
-                    <i data-lucide="x"></i>
-                </button>
-            </div>
-            
-            <form id="addCustomerForm" onsubmit="handleFormSubmit(event)">
-                <div class="form-group">
-                    <label>Customer/Business Name</label>
-                    <input type="text" name="name" required placeholder="e.g. City Mall Display">
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label>Contact Number</label>
-                        <input type="tel" name="contact" required placeholder="+91 98765...">
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" name="location" required placeholder="City/Area">
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label>Board Type</label>
-                        <select name="type">
-                            <option value="Indoor P2.5">Indoor P2.5</option>
-                            <option value="Indoor P3">Indoor P3</option>
-                            <option value="Outdoor P4">Outdoor P4</option>
-                            <option value="Outdoor P6">Outdoor P6</option>
-                            <option value="Outdoor P10">Outdoor P10</option>
-                            <option value="Transparent">Transparent LED</option>
-                            <option value="Custom">Custom</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Size (W x H)</label>
-                        <input type="text" name="size" placeholder="e.g. 10x6 ft">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Follow-up Reminder</label>
-                    <input type="datetime-local" name="followUp">
-                </div>
-
-                <div class="form-group">
-                    <label>Requirements / Notes</label>
-                    <textarea name="requirements" rows="3" placeholder="Specific mounting needs, power supply..."></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    Save Customer
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
+
 </html>
